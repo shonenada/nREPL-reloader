@@ -12,6 +12,7 @@ import subprocess
 
 # compatibility support
 
+NAME = 'nrepl'
 PY2 = sys.version_info[0] == 2
 
 
@@ -66,6 +67,10 @@ class BencodeIO(object):
         return _write_data(self.fd, data)
 
 
+def console(msg, _name=None):
+    print('[{}]: {}'.format(_name or NAME, msg))
+
+
 def get_ns_declare(fd):
     while True:
         line = fd.readline()
@@ -117,7 +122,7 @@ class Watcher(object):
 
     def trigger_reload(self, filename):
         filename = os.path.realpath(filename)
-        print('Detected changes of %s, reloading' % filename)
+        console('Detected changes of %s, reloading' % filename)
         ns = get_ns(filename)
         self._client.write({
             'op': 'eval',
@@ -157,7 +162,7 @@ class Watcher(object):
                 raise e
             time.sleep(interval)
 
-        print("Started watching", dirpath)
+        console("Started watching %s" % dirpath)
 
         while True:
             traverse_dir(dirpath, self.reload_if_updated)
@@ -178,7 +183,7 @@ class Handler(threading.Thread):
                                          stderr=subprocess.STDOUT,
                                          preexec_fn=os.setsid)
         for line in iter(self._process.stdout.readline, b''):
-            print (line.rstrip())
+            console(line.rstrip(), _name='lein')
 
     def stop(self):
         if self._process is not None:
@@ -216,7 +221,7 @@ def cli():
         try:
             watcher = Watcher(args.uri, timeout=args.timeout)
             watcher.start(path)
-            print("Started watching", path)
+            console("Started watching %s" % path)
         except Exception as e:
             h.stop()
             h.join()
