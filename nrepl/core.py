@@ -30,9 +30,6 @@ else:
     from urlparse import urlparse
 
 
-DEFAULT_nREPL_URI = "nrepl://localhost:59258"
-
-
 def _write_data(fd, data):
     write = lambda x: fd.write(x)
     if isinstance(data, string_types):
@@ -146,6 +143,8 @@ class Watcher(object):
                 self.trigger_reload(filename)
 
     def start(self, dirpath, interval=3):
+        console("Connect to %s" % self.uri)
+
         start_ts = get_ts()
         while True:
             try:
@@ -202,12 +201,15 @@ def build_sig_handler(proc):
 def cli():
     parser = argparse.ArgumentParser()
     parser.add_argument('cmd', choices=['run', 'watch'])
-    parser.add_argument('-u', '--uri', default=DEFAULT_nREPL_URI)
-    parser.add_argument('-p', '--path', default='.')
+    parser.add_argument('-u', '--uri', default=None)
+    parser.add_argument('--host', default='localhost')
+    parser.add_argument('-p', '--port', default=None)
+    parser.add_argument('-w', '--watch-path', default='.')
     parser.add_argument('-t', '--timeout', type=int, default=60)
     args = parser.parse_args()
 
-    path = os.path.realpath(args.path)
+    path = os.path.realpath(args.watch_path)
+    uri = args.uri or 'nrepl://{}:{}'.format(args.host, args.port)
 
     if args.cmd == 'run':
         h = Handler(['lein', 'run'])
@@ -219,16 +221,15 @@ def cli():
         time.sleep(5)    # wait for start
 
         try:
-            watcher = Watcher(args.uri, timeout=args.timeout)
+            watcher = Watcher(uri, timeout=args.timeout)
             watcher.start(path)
-            console("Started watching %s" % path)
         except Exception as e:
             h.stop()
             h.join()
             raise e
 
     if args.cmd == 'watch':
-        watcher = Watcher(args.uri, timeout=args.timeout)
+        watcher = Watcher(uri, timeout=args.timeout)
         watcher.start(path)
 
 
