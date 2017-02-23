@@ -64,8 +64,14 @@ class BencodeIO(object):
         return _write_data(self.fd, data)
 
 
-def console(msg, _name=None):
+def console(msg, _name=None, _color=None):
+    if _color:
+        sys.stdout.write('\033[%sm' % _color)
+
     print('[{}]: {}'.format(_name or NAME, msg))
+
+    if _color:
+        sys.stdout.write('\033[0;0m')
 
 
 def get_ns_declare(fd):
@@ -119,7 +125,7 @@ class Watcher(object):
 
     def trigger_reload(self, filename):
         filename = os.path.realpath(filename)
-        console('Detected changes of %s, reloading' % filename)
+        console('Detected changes of %s, reloading' % filename, _color='2')
         ns = get_ns(filename)
         self._client.write({
             'op': 'eval',
@@ -143,7 +149,7 @@ class Watcher(object):
                 self.trigger_reload(filename)
 
     def start(self, dirpath, interval=3):
-        console("Connect to %s" % self.uri)
+        console("Connect to %s" % self.uri, _color='2')
 
         start_ts = get_ts()
         while True:
@@ -161,7 +167,7 @@ class Watcher(object):
                 raise e
             time.sleep(interval)
 
-        console("Started watching %s" % dirpath)
+        console("Started watching %s" % dirpath, _color='2')
 
         while True:
             traverse_dir(dirpath, self.reload_if_updated)
