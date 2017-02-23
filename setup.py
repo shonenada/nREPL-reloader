@@ -9,7 +9,7 @@ with open(os.path.join(CURRENT_DIR, "README.rst")) as long_description_file:
 
 setup(
     name="nrepl",
-    version="0.1.0",
+    version="0.1.2",
     url="https://github.com/shonenada/nREPL-reloader",
     author="shonenada",
     author_email="shonenada@gmail.com",

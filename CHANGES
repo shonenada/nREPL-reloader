@@ -1,0 +1,19 @@
+Changelog
+=========
+
+0.1.2
+-----
+
+- Supported `host` and `port` argument.
+- Colorful output.
+
+0.1.1
+----
+
+- First public preview release.
+  Add a executable script detecting stat of file system, and try to reload clojure namespace.
+
+0.1.0
+-----
+
+- First private preview version. Implement a simple script connect nREPL server.
