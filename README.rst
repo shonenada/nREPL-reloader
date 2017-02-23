@@ -12,13 +12,13 @@ Quick Start
 
 2. Start watching clojure files, Run `nrepl` with watch command:: 
 
-    $ nrepl watch -p /path/to/project -u nrepl://localhost:59258
+    $ nrepl watch -p 59258 -w /path/to/project
     Start watching /home/shonenada/Projects/clojure/src
     Detected changes of /home/shonenada/Projects/clojure/src/route.clj, reloading
 
 3. (or) Start clojure project (`lein run`) and watch clojure files::
 
-    $ nrepl run -p /path/to/project -u nrepl://localhost:59258
+    $ nrepl run -p 59258 -w /path/to/project
     [lein]: Compiling 1 source files...
     [lein]: Start server on 8080
     [nrepl]: Start watching /home/shonenada/Projects/clojure/src
