@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'nrepl = nrepl.core:cli',
+            'nrepl = nrepl.cli:cli',
         ]
     },
     classifiers=[
