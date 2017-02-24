@@ -9,6 +9,7 @@ if not PY2:
     unichr = chr
 
     from urllib.parse import urlparse
+    from io import StringIO
 
 else:
     text_type = unicode
@@ -16,3 +17,4 @@ else:
     unichr = chr
 
     from urlparse import urlparse
+    from cStringIO import StringIO

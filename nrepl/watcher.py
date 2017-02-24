@@ -9,6 +9,10 @@ from nrepl.utils import console, get_ts, traverse_dir
 from nrepl.client import Client
 
 
+COLOR_GRAY = '2'
+COLOR_RED = '0;31'
+
+
 def nrepl_connect(uri):
     uri = urlparse(uri)
     _socket = socket.create_connection(uri.netloc.split(":"))
@@ -25,12 +29,21 @@ class Watcher(object):
 
     def trigger_reload(self, filename):
         filename = os.path.realpath(filename)
-        console('Detected changes of %s, reloading' % filename, _color='2')
+        console('Detected changes of %s, reloading' % filename,
+                _color=COLOR_GRAY, _with_time=True)
         ns = get_ns(filename)
         self._client.write({
             'op': 'eval',
             'code': "(require '%s :reload)" % ns,
         })
+        while True:
+            rv = self._client.read()
+            err = rv.get('err')
+            status = rv.get('status')
+            if err:
+                console(err.strip(), _color=COLOR_RED, _with_time=True)
+            if status and 'done' in status:
+                break
 
     def reload_if_updated(self, filename):
         if filename.endswith('.clj'):
@@ -49,9 +62,10 @@ class Watcher(object):
                 self.trigger_reload(filename)
 
     def start(self, dirpath, interval=3):
-        console("Connect to %s" % self.uri, _color='2')
+        console("Connect to %s" % self.uri, _color=COLOR_GRAY, _with_time=True)
 
         start_ts = get_ts()
+
         while True:
             try:
                 self._client = nrepl_connect(self.uri)
@@ -67,7 +81,8 @@ class Watcher(object):
                 raise e
             time.sleep(interval)
 
-        console("Started watching %s" % dirpath, _color='2')
+        console("Started watching %s" % dirpath,
+                _color=COLOR_GRAY, _with_time=True)
 
         while True:
             traverse_dir(dirpath, self.reload_if_updated)
