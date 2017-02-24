@@ -17,6 +17,7 @@ def cli():
     parser.add_argument('-p', '--port', default=None)
     parser.add_argument('-w', '--watch-path', default='.')
     parser.add_argument('-t', '--timeout', type=int, default=60)
+    parser.add_argument('-i', '--interval', type=int, default=3)
     args = parser.parse_args()
 
     path = os.path.realpath(args.watch_path)
@@ -33,7 +34,7 @@ def cli():
 
         try:
             watcher = Watcher(uri, timeout=args.timeout)
-            watcher.start(path)
+            watcher.start(path, args.interval)
         except Exception as e:
             h.stop()
             h.join()
@@ -41,4 +42,4 @@ def cli():
 
     if args.cmd == 'watch':
         watcher = Watcher(uri, timeout=args.timeout)
-        watcher.start(path)
+        watcher.start(path, args.interval)
