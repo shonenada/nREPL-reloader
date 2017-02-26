@@ -3,6 +3,9 @@ nREPL-reloader
 
 Auto reload class with `nREPL <(https://github.com/clojure/tools.nrepl>`_.
 
+.. image:: https://asciinema.org/a/0zgnfutgxw7jedoza1ievcx7z.png
+   :target: https://asciinema.org/a/0zgnfutgxw7jedoza1ievcx7z
+
 Quick Start
 -----------
 
