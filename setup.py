@@ -1,6 +1,8 @@
 import os
 from setuptools import setup, find_packages
 
+from nrepl import __version__
+
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -9,7 +11,7 @@ with open(os.path.join(CURRENT_DIR, "README.rst")) as long_description_file:
 
 setup(
     name="nrepl",
-    version="0.1.3",
+    version=__version__,
     url="https://github.com/shonenada/nREPL-reloader",
     author="shonenada",
     author_email="shonenada@gmail.com",
