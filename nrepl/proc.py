@@ -7,10 +7,6 @@ import subprocess
 from nrepl.utils import console
 
 
-class TimeoutError(Exception):
-    pass
-
-
 class Handler(threading.Thread):
 
     def __init__(self, cmd):

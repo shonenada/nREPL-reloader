@@ -13,6 +13,10 @@ COLOR_GRAY = '2'
 COLOR_RED = '0;31'
 
 
+class TimeoutError(Exception):
+    pass
+
+
 def nrepl_connect(uri):
     uri = urlparse(uri)
     _socket = socket.create_connection(uri.netloc.split(":"))
