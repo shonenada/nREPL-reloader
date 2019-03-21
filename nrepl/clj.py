@@ -8,7 +8,8 @@ def get_ns_declare(fd):
 def get_ns(filename):
     with open(filename, 'r') as infile:
         ns_declare = get_ns_declare(infile)
-        _, ns = ns_declare.split()
+        splited = ns_declare.split()
+        ns = splited[-1]
         if ns.endswith(')'):
             ns = ns[:-1]
     return ns.strip()
