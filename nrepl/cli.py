@@ -22,6 +22,7 @@ def cli():
     parser.add_argument('-w', '--watch-path', default='.')
     parser.add_argument('-t', '--timeout', type=int, default=60)
     parser.add_argument('-i', '--interval', type=int, default=3)
+    parser.add_argument('-o', '--offline', action='store_true', default=False)
     args = parser.parse_args()
 
     if args.version is True:
@@ -33,6 +34,8 @@ def cli():
 
     if args.cmd == 'run':
         cmd = ['lein']
+        if args.offline:
+            cmd.append('-o')
         if args.profile:
             cmd.append('with-profile')
             cmd.append(args.profile)
