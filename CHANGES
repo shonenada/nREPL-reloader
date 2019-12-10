@@ -1,6 +1,22 @@
 Changelog
 =========
 
+0.1.6
+-----
+
+- Added `--offline` command argument, which pass as `-of` to lein.
+
+0.1.5
+-----
+
+- Added `profile` command argument, which pass as `with-profile` to lein.
+
+0.1.4
+-----
+
+- Added `--version` command argument
+- Fixed `NameError`
+
 0.1.3
 -----
 
