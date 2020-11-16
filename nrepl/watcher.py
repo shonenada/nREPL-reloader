@@ -74,6 +74,12 @@ class Watcher(object):
             try:
                 self._client = nrepl_connect(self.uri)
                 break
+            except ConnectionRefusedError as e:
+                ts = get_ts()
+                if (ts - start_ts) > self.timeout:
+                    raise TimeoutError('%s (in %ss)' % (e, self.timeout))
+                else:
+                    continue
             except socket.error as e:
                 eno, _ = e
                 if eno == errno.ECONNREFUSED:
